@@ -56,4 +56,4 @@ First you have to add the path of the file you want to `link` with in the **"arg
 ```
 
 Then simply run the VScode debugger
-![Run Debugger](/debug.png)
+![Run Debugger](./debug.png)
