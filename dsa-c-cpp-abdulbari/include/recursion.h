@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-// Tail Recursion
+/* Tail Recursion */
 static void count_down(int n) {
     if (n < 1)
         return;
@@ -11,7 +11,7 @@ static void count_down(int n) {
     count_down(n - 1);
 }
 
-// Head Recursion
+/* Head Recursion */
 static void count_up(int n) {
     if (n > 0) {
         count_up(n - 1);

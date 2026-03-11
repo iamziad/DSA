@@ -3,7 +3,7 @@
 
 int main() {
 
-    // printf("%lf", myPow1(2, -5));
+    printf("Hello");
 
     return 0;
 }
