@@ -81,4 +81,43 @@ static double pow_faster_logn(double x, int n) {
     return ret;
 }
 
+/* Taylor Series */
+static int e(int n, int d) {
+    if (d == 0)
+        return 1;
+
+    static int p = 1, f = 1;
+    int r;
+
+    r = e(n, d - 1);
+
+    p = p * n;
+    f = f * d;
+
+    return r + p / f;
+}
+
+/* Terribly Slow O(2^n) */
+static int fib(int n) {
+  if (n <= 1) return n;
+
+  return fib(n - 2) + fib(n - 1);
+}
+
+/* Fast O(n - 2) => O(n) */
+static int fib_ite(int n) {
+  if (n <= 1) return n;
+
+  int prev_fib = 0, next_fib = 1;
+
+  for (int i = 2; i <= n; i++) {
+    int tmp = next_fib;
+    next_fib = prev_fib + next_fib;
+    prev_fib = tmp;
+  }
+
+  return next_fib;
+}
+
+
 #endif

@@ -3,7 +3,7 @@
 
 int main() {
 
-    printf("Hello");
+  printf("fib(4) = %d", fib_ite(7));
 
     return 0;
 }
