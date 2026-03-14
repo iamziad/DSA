@@ -2,6 +2,8 @@
 #define RECURSION_H
 
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 /* Tail Recursion */
 static void count_down(int n) {
@@ -106,18 +108,29 @@ static int fib(int n) {
 
 /* Fast O(n - 2) => O(n) */
 static int fib_ite(int n) {
-  if (n <= 1) return n;
+    if (n <= 1) return n;
 
-  int prev_fib = 0, next_fib = 1;
+    int prev_fib = 0, next_fib = 1;
 
-  for (int i = 2; i <= n; i++) {
-    int tmp = next_fib;
-    next_fib = prev_fib + next_fib;
-    prev_fib = tmp;
-  }
+    for (int i = 2; i <= n; i++) {
+        int tmp = next_fib;
+        next_fib = prev_fib + next_fib;
+        prev_fib = tmp;
+    }
 
-  return next_fib;
+    return next_fib;
 }
+
+/* Fast O(n) - "cache" size must be atleast n + 1 or undefind behaviors may occur */
+static int fib_memo(int n, int cache[static n + 1]) {
+    if (n <= 1) return n;
+
+    if (cache[n] != -1) return cache[n];
+
+    cache[n] = fib_memo(n - 2, cache) + fib_memo(n - 1, cache);
+
+    return cache[n];
+ }
 
 
 #endif
