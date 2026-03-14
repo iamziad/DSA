@@ -130,7 +130,15 @@ static int fib_memo(int n, int cache[static n + 1]) {
     cache[n] = fib_memo(n - 2, cache) + fib_memo(n - 1, cache);
 
     return cache[n];
- }
+}
 
+/* Fast O(3n) => O(n) */
+static int c(int n, int r) {
+    int v1 = factorial(n);       /* O(n) */
+    int v2 = factorial(r);       /* O(n) */
+    int v3 = factorial(n - r);   /* O(n) */
+
+    return v1 / v2 * v3;         /* O(1) */
+}
 
 #endif
