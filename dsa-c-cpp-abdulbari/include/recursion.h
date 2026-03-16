@@ -141,4 +141,21 @@ static int c(int n, int r) {
     return v1 / v2 * v3;         /* O(1) */
 }
 
+/* Very slow O(2^n) */
+static int c_rec(int n, int r) {
+    if (r == 0) return 1;
+    if (r == n) return 1;
+
+    return c_rec(n - 1, r - 1) + c_rec(n - 1, r);
+}
+
+static void tower_of_hanoi(int n, char src, char helper, char dest) {
+    if (n > 0) {
+        tower_of_hanoi(n - 1, src, dest, helper);
+        printf("moved top disk from %c -> %c\n", src, dest);
+        tower_of_hanoi(n - 1, helper, src, dest);
+    }
+}
+
+
 #endif
