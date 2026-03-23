@@ -1,0 +1,26 @@
+#ifndef ARRAY_H
+#define ARRAY_H
+
+#include <stdint.h>
+#include <stdlib.h>
+
+typedef uint32_t u32;
+typedef uint64_t u64;
+typedef int64_t i64;
+typedef int32_t i32;
+typedef uint8_t u8;
+
+typedef struct Array Array;
+
+Array *array_create(const size_t size);
+void array_free(Array *a);
+void array_set(Array *a, const size_t idx, const i32 val);
+i32 array_get(const Array *a, const size_t idx);
+void array_display(const Array *a);
+void array_append(Array *a, const i32 val);
+void array_delete(Array *a, const size_t idx);
+i32 array_max(const Array *a);
+i32 array_min(const Array *a);
+i32 array_search(const Array *a, const i32 val);
+
+#endif
