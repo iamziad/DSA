@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef uint32_t u32;
 typedef uint64_t u64;
@@ -12,7 +13,7 @@ typedef uint8_t u8;
 
 typedef struct Array Array;
 
-Array *array_create(const size_t size);
+Array *array_create(const size_t size, const bool search_ranking);
 void array_free(Array *a);
 void array_set(Array *a, const size_t idx, const i32 val);
 i32 array_get(const Array *a, const size_t idx);
@@ -21,6 +22,7 @@ void array_append(Array *a, const i32 val);
 void array_delete(Array *a, const size_t idx);
 i32 array_max(const Array *a);
 i32 array_min(const Array *a);
-i32 array_search(const Array *a, const i32 val);
+i32 array_search(Array *a, const i32 val);
+void array_reverse(Array *a);
 
 #endif

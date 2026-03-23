@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 #include "../include/array.h"
 
@@ -10,17 +11,18 @@ struct Array{
     i32 *data;
     size_t size;
     size_t length;
+    bool search_ranking;
 };
 
-Array *array_create(const size_t size) {
+Array *array_create(const size_t size, const bool search_ranking) {
     Array *a = malloc(sizeof(Array));
     if (!a) {
         fprintf(stderr, "array_create: couldn't allocate memory for array object\n");
         exit(1);
     }
 
-    a->data = malloc(sizeof(const i32) * size);
-    if (!a) {
+    a->data = malloc(sizeof(i32) * size);
+    if (!a->data) {
         fprintf(stderr, "array_create: couldn't allocate memory for array data\n");
         free(a);
         exit(1);
@@ -28,6 +30,7 @@ Array *array_create(const size_t size) {
     
     a->length = 0;
     a->size = size;
+    a->search_ranking = search_ranking;
 
     return a;
 }
@@ -101,10 +104,16 @@ void array_append(Array *a, const i32 val) {
     a->length++;
 }
 
-i32 array_search(const Array *a, const i32 val) {
+i32 array_search(Array *a, const i32 val) {
     for (size_t i = 0; i < a->length; i++) {
         if (a->data[i] == val) {
-            return i;
+            if (a->search_ranking && i > 0) {
+                i32 tmp = a->data[i];
+                a->data[i] = a->data[i - 1];
+                a->data[i - 1] = tmp;
+                return (i32)(i - 1);
+            }
+            return (i32)i;
         }
     }
     return -1;
