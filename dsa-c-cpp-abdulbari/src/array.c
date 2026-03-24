@@ -16,13 +16,13 @@ struct Array{
 };
 
 Array *array_create(const size_t size, const bool search_ranking) {
-    Array *a = malloc(sizeof(Array));
+    Array *a = calloc(1, sizeof(Array));
     if (!a) {
         fprintf(stderr, "array_create: couldn't allocate memory for array object\n");
         exit(1);
     }
 
-    a->data = malloc(sizeof(i32) * size);
+    a->data = calloc(size, sizeof(i32));
     if (!a->data) {
         fprintf(stderr, "array_create: couldn't allocate memory for array data\n");
         free(a);
@@ -37,6 +37,10 @@ Array *array_create(const size_t size, const bool search_ranking) {
 }
 
 void array_free(Array *a) {
+    if (!a) {
+        fprintf(stderr, "array_free: recieved null pointer\n");
+        exit(1);
+    }
     free(a->data);
     free(a);
     printf("array_free: array object is freed successfully.\n");
@@ -54,12 +58,20 @@ void array_set(Array *a, const size_t idx, const i32 val) {
     }
 
     a->data[idx] = val;
-    a->length++;
+
+    if (idx >= a->length) {
+        a->length = idx + 1;
+    }
 }
 
 i32 array_get(const Array *a, const size_t idx) {
     if (!a) {
         fprintf(stderr, "array_get: received null pointer.\n");
+        exit(1);
+    }
+
+    if (idx >= a->size) {
+        fprintf(stderr, "array_get: exceeded boundary.\n");
         exit(1);
     }
 
@@ -71,7 +83,7 @@ void array_display(const Array *a) {
         fprintf(stderr, "array_display: received null pointer.\n");
         exit(1);
     }
-    
+
     printf("Data: {");
     for (size_t i = 0; i < a->size; i++) {
         printf(" %d ", a->data[i]);
@@ -88,7 +100,7 @@ void array_delete(Array *a, const size_t idx) {
         exit(1);
     }
 
-    for (size_t i = idx; i <= a->length; i++) {
+    for (size_t i = idx; i < a->length; i++) {
         a->data[i] = a->data[i + 1];
     }
 
@@ -101,8 +113,13 @@ void array_append(Array *a, const i32 val) {
         exit(1);
     }
 
-    a->data[a->length] = val;
-    a->length++;
+    if (a->length == a->size) {
+        a->data[a->length - 1] = val;
+    } else {
+        a->data[a->length] = val;
+        a->length++;
+    }
+
 }
 
 i32 array_search(Array *a, const i32 val) {
@@ -146,7 +163,7 @@ i32 array_head(const Array *a) {
         fprintf(stderr, "array_head: received null pointer.\n");
         exit(1);
     }
-    if (a->length == 0) return INT_MAX;
+
     return a->data[0];
 }
 
@@ -155,7 +172,7 @@ i32 array_tail(const Array *a) {
         fprintf(stderr, "array_tail: received null pointer.\n");
         exit(1);
     }
-    if (a->length == 0) return INT_MAX;
+
     return a->data[a->length - 1];
 }
 
