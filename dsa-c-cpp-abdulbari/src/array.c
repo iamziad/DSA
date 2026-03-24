@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <limits.h>
 
 #include "../include/array.h"
 
@@ -139,3 +140,22 @@ i32 array_min(const Array *a) {
     }
     return min;
 }
+
+i32 array_head(const Array *a) {
+    if (!a) {
+        fprintf(stderr, "array_head: received null pointer.\n");
+        exit(1);
+    }
+    if (a->length == 0) return INT_MAX;
+    return a->data[0];
+}
+
+i32 array_tail(const Array *a) {
+    if (!a) {
+        fprintf(stderr, "array_tail: received null pointer.\n");
+        exit(1);
+    }
+    if (a->length == 0) return INT_MAX;
+    return a->data[a->length - 1];
+}
+

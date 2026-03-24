@@ -22,6 +22,8 @@ void array_append(Array *a, const i32 val);
 void array_delete(Array *a, const size_t idx);
 i32 array_max(const Array *a);
 i32 array_min(const Array *a);
+i32 array_head(const Array *a);
+i32 array_tail(const Array *a);
 i32 array_search(Array *a, const i32 val);
 void array_reverse(Array *a);
 
