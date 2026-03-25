@@ -25,6 +25,9 @@ i32 array_min(const Array *a);
 i32 array_head(const Array *a);
 i32 array_tail(const Array *a);
 i32 array_search(Array *a, const i32 val);
+i32 array_bsearch(const Array *a, const i32 val);
+void array_sort(Array *a);
+bool array_is_sorted(const Array *a);
 void array_reverse(Array *a);
 
 #endif

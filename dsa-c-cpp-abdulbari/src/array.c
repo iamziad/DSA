@@ -123,6 +123,16 @@ void array_append(Array *a, const i32 val) {
 }
 
 i32 array_search(Array *a, const i32 val) {
+    if (!a) {
+        fprintf(stderr, "array_search: received null pointer.\n");
+        exit(1);
+    }
+
+    if (a->length == 0) {
+        fprintf(stderr, "array_search: array doesn't have elements to search for.\n");
+        exit(1);
+    }
+
     for (size_t i = 0; i < a->length; i++) {
         if (a->data[i] == val) {
             if (a->search_ranking && i > 0) {
@@ -176,3 +186,72 @@ i32 array_tail(const Array *a) {
     return a->data[a->length - 1];
 }
 
+i32 array_bsearch(const Array *a, const i32 val) {
+    if (!a) {
+        fprintf(stderr, "array_bsearch: received null pointer.\n");
+        exit(1);
+    }
+
+    if (a->length == 0) {
+        fprintf(stderr, "array_bsearch: array doesn't have elements to search for.\n");
+        exit(1);
+    }
+
+    i32 head = 0;
+    i32 tail = (i32)a->length - 1;
+
+    while (head <= tail) {
+        i32 mid = head + (tail - head) / 2;
+
+        if (val == a->data[mid]) {
+            return mid;
+        } else if (val < a->data[mid]) {
+            tail = mid - 1;
+        } else {
+            head = mid + 1;
+        }
+    }
+
+    return -1;
+}
+
+void array_sort(Array *a) {
+    for (size_t i = 0; i < a->length - 1; i++) {
+        size_t min = i;
+
+        for (size_t j = i + 1; j < a->length; j++) {
+            if (a->data[min] > a->data[j]) {
+                min = j;
+            }
+        }
+
+        if (min != i) {
+            i32 tmp = a->data[i];
+            a->data[i] = a->data[min];
+            a->data[min] = tmp;
+        }
+    }
+}
+
+void array_reverse(Array *a) {
+    size_t head = 0;
+    size_t tail = a->length - 1;
+
+    while(head < tail) {
+        i32 tmp = a->data[head];
+        a->data[head] = a->data[tail];
+        a->data[tail] = tmp;
+
+        head++;
+        tail--;
+    }
+}
+
+bool array_is_sorted(const Array *a) {
+    for (size_t i = 0; i < a->length - 1; i++) {
+        if (a->data[i] > a->data[i + 1]) {
+            return false;
+        }
+    }
+    return true;
+}
