@@ -255,3 +255,51 @@ bool array_is_sorted(const Array *a) {
     }
     return true;
 }
+
+void array_fill(Array *a, i32 n) {
+    for (size_t i = 0; i < a->length; i++)  {
+        a->data[i] = n;
+    }
+}
+
+void array_lshift(Array *a, size_t n) {
+    if (n >= a->length) {
+        array_fill(a, 0);
+    }
+
+    for (size_t i = 0; i < a->length - n; i++) {
+        a->data[i] = a->data[i + n];
+    }
+
+    for (size_t i = a->length - n; i < a->length; i++) {
+        a->data[i] = 0;
+    }
+}
+
+Array *array_merge(Array *src1, Array *src2) {
+    Array *dest = array_create(src1->length + src2->length, false);
+
+    size_t i = 0;
+    size_t j = 0;
+    size_t k = 0;
+
+    while(i < src1->length && j < src2->length) {
+        if (src1->data[i] < src2->data[j]) {
+            dest->data[k++] = src1->data[i++];
+        } else {
+            dest->data[k++] = src2->data[j++];
+        }
+    }
+
+        while(i < src1->length) {
+            dest->data[k++] = src1->data[i++];
+        }
+
+        while(j < src2->length) {
+            dest->data[k++] = src2->data[j++];
+        }
+
+    dest->length = src1->length + src2->length;
+
+    return dest;
+}

@@ -29,5 +29,7 @@ i32 array_bsearch(const Array *a, const i32 val);
 void array_sort(Array *a);
 bool array_is_sorted(const Array *a);
 void array_reverse(Array *a);
+void array_lshift(Array *a, size_t n);
+Array *array_merge(Array *src1, Array *src2);
 
 #endif
