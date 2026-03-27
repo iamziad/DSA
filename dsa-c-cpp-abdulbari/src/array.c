@@ -13,9 +13,10 @@ struct Array{
     size_t size;
     size_t length;
     bool search_ranking;
+    bool unique;
 };
 
-Array *array_create(const size_t size, const bool search_ranking) {
+Array *array_create(const size_t size, const bool search_ranking, bool unique) {
     Array *a = calloc(1, sizeof(Array));
     if (!a) {
         fprintf(stderr, "array_create: couldn't allocate memory for array object\n");
@@ -32,6 +33,7 @@ Array *array_create(const size_t size, const bool search_ranking) {
     a->length = 0;
     a->size = size;
     a->search_ranking = search_ranking;
+    a->unique = unique;
 
     return a;
 }
@@ -55,6 +57,12 @@ void array_set(Array *a, const size_t idx, const i32 val) {
     if (idx >= a->size) {
         fprintf(stdout, "array_set: exceeded boundary.\n");
         exit(1);
+    }
+
+    if (a->unique) {
+        for (size_t i = 0; i < a->length; i++) {
+            if (a->data[i] == a->data[idx]) return;
+        }
     }
 
     a->data[idx] = val;
@@ -111,6 +119,12 @@ void array_append(Array *a, const i32 val) {
     if (!a) {
         fprintf(stderr, "array_display: received null pointer.\n");
         exit(1);
+    }
+
+    if (a->unique) {
+        for (size_t i = 0; i < a->length; i++) {
+            if (a->data[i] == val) return;
+        }
     }
 
     if (a->length == a->size) {
@@ -277,7 +291,7 @@ void array_lshift(Array *a, size_t n) {
 }
 
 Array *array_merge(Array *src1, Array *src2) {
-    Array *dest = array_create(src1->length + src2->length, false);
+    Array *dest = array_create(src1->length + src2->length, false, true);
 
     size_t i = 0;
     size_t j = 0;

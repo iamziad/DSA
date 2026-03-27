@@ -13,7 +13,7 @@ typedef uint8_t u8;
 
 typedef struct Array Array;
 
-Array *array_create(const size_t size, const bool search_ranking);
+Array *array_create(const size_t size, const bool search_ranking, bool unique);
 void array_free(Array *a);
 void array_set(Array *a, const size_t idx, const i32 val);
 i32 array_get(const Array *a, const size_t idx);
