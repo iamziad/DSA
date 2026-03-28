@@ -302,18 +302,74 @@ Array *array_merge(Array *src1, Array *src2) {
             dest->data[k++] = src1->data[i++];
         } else {
             dest->data[k++] = src2->data[j++];
+        } 
+    }
+
+    while(i < src1->length) {
+        dest->data[k++] = src1->data[i++];
+    }
+
+    while(j < src2->length) {
+        dest->data[k++] = src2->data[j++];
+    }
+
+    dest->length = src1->length + src2->length;
+
+    return dest;
+}
+
+Array *array_union(Array *src1, Array *src2) {
+    Array *dest = array_create(src1->length + src2->length, false, false);
+
+    size_t i = 0;
+    size_t j = 0;
+    size_t k = 0;
+
+    while(i < src1->length && j < src2->length) {
+        if (src1->data[i] < src2->data[j]) {
+            dest->data[k++] = src1->data[i++];
+            dest->length++;
+        } else if (src1->data[i] > src2->data[j]) {
+            dest->data[k++] = src2->data[j++];
+            dest->length++;
+        } else {
+            dest->data[k++] = src1->data[i++];
+            j++;
+            dest->length++;
         }
     }
 
-        while(i < src1->length) {
+    while (i < src1->length) {
+        dest->data[k++] = src1->data[i++];
+        dest->length++;
+    }
+
+    while (j < src2->length) {
+        dest->data[k++] = src2->data[j++];
+        dest->length++;
+    }
+
+    return dest;
+
+}
+
+Array *array_intersec(Array *src1, Array *src2) {
+    Array *dest = array_create(src1->length + src2->length, false, false);
+
+    size_t i = 0;
+    size_t j = 0;
+    size_t k = 0;
+
+    while(i < src1->length && j < src2->length) {
+        if (src1->data[i] < src2->data[j]) {
+            i++;
+        } else if(src1->data[i] > src2->data[j]) {
+            j++;
+        } else {
             dest->data[k++] = src1->data[i++];
+            dest->length++;
         }
-
-        while(j < src2->length) {
-            dest->data[k++] = src2->data[j++];
-        }
-
-    dest->length = src1->length + src2->length;
+    }
 
     return dest;
 }
