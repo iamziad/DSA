@@ -7,6 +7,9 @@
 #include "../include/array.h"
 
 typedef int32_t i32;
+typedef uint32_t u32;
+typedef int64_t i64;
+typedef uint64_t u64;
 
 struct Array{
     i32 *data;
@@ -372,4 +375,108 @@ Array *array_intersec(Array *src1, Array *src2) {
     }
 
     return dest;
+}
+
+i32 array_missing(Array *a) {
+    i32 expected_idx_val_diff = a->data[0] - 0;
+
+    for (size_t i = 0; i < a->length; i++) {
+        if ((size_t)a->data[i] - i != (size_t)expected_idx_val_diff) {
+            return a->data[i] - 1;
+        }
+    }
+
+    return 0;
+}
+
+Array *array_missings(Array *a) {
+    Array *missings = array_create(a->size, false, false);
+
+    i32 expected_diff = a->data[0] - 0;
+
+    for (size_t i = 0; i < a->length; i++) {
+        i32 curr_elm = a->data[i];
+        size_t curr_diff = (size_t)curr_elm - i;
+
+        if (curr_diff != (size_t)expected_diff) {
+            while((size_t)expected_diff < curr_diff) {
+                array_append(missings, i + expected_diff);
+                expected_diff++;
+            }
+        }
+    }
+
+    return missings;
+}
+
+Array *array_fmissings(Array *a, i32 greater_elm) {
+    Array *ht = array_create(greater_elm + 1, false, false);
+    Array *ret = array_create(greater_elm, false, false);
+
+    for (size_t i = 0; i < a->length; i++) {
+        array_set(ht, a->data[i], 1);
+    }
+
+    for (size_t i = 1; i < ht->size; i++) {
+        if (ht->data[i] == 0) {
+            array_append(ret, i);
+        }
+    }
+
+    return ret;
+}
+
+Array *array_duplicates(Array *a, i32 greater_elm) {
+    Array *ht = array_create(greater_elm + 1, false, false);
+    Array *duplicates = array_create(greater_elm, false, false);
+
+    for (size_t i = 0; i < a->length; i++) {
+        i32 key = array_get(a, i);
+        i32 val = array_get(ht, key);
+        array_set(ht, key, val + 1);
+    }
+
+    for (size_t i = 0; i < ht->length; i++) {
+        i32 count = array_get(ht, i);
+        if (count > 1) {
+            array_append(duplicates, i);
+        }
+    }
+
+    return duplicates;
+}
+
+Array *array_sorted_duplicates(Array *a) {
+    Array *duplicates = array_create(a->length, false, false);
+    i32 last_duplicate = 0;
+
+    for (size_t i = 0; i < a->length - 1; i++) {
+        if (array_get(a, i) == array_get(a, i + 1) && array_get(a, i) != last_duplicate) {
+            last_duplicate = array_get(a, i);
+            array_append(duplicates, last_duplicate);
+        }
+    }
+
+    return duplicates;
+}
+
+
+Array *array_min_max(Array *a) {
+    Array *min_max = array_create(2, false, false);
+
+    i32 min = a->data[0];
+    i32 max = a->data[0];
+
+    for (size_t i = 0; i < a->length; i++) {
+        if (a->data[i] < min) {
+            min = a->data[i];
+        } else if(a->data[i] > max) {
+            max = a->data[i];
+        }
+    }
+
+    array_append(min_max, min);
+    array_append(min_max, max);
+
+    return min_max;
 }

@@ -33,5 +33,11 @@ void array_lshift(Array *a, size_t n);
 Array *array_merge(Array *src1, Array *src2);
 Array *array_union(Array *src1, Array *src2);
 Array *array_intersec(Array *src1, Array *src2);
+i32 array_missing(Array *a);
+Array *array_missings(Array *a);
+Array *array_fmissings(Array *a, i32 greater_elm);
+Array *array_duplicates(Array *a, i32 greater_elm);
+Array *array_sorted_duplicates(Array *a);
+Array *array_min_max(Array *a);
 
 #endif
