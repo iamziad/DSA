@@ -1,5 +1,5 @@
-# Note: each directory is dedicated to a Course or a Bootcamp
-
+> [!NOTE]
+> Each directory is dedicated to a Course or a Bootcamp
 
 ## Abdul Bari's data structures & algorithms series
 
