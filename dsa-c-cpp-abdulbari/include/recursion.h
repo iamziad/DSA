@@ -158,18 +158,28 @@ static void tower_of_hanoi(int n, char src, char helper, char dest) {
     }
 }
 
+/*
+  Time complexity for this function is unknown,
+  because the steps grows in a non-monotonic way.
+
+   Example: three_n(100) takes less steps than three_n(27),
+   although the input is much more bigger.
+
+   Some people say that the closest estimate is O(logn),
+   but this is not proven mathmatically
+ */
 static int three_n(int n, int *steps) {
-    if (n == 1) {
+    if (n <= 1) {
         return n;
     }
 
-    (*steps)++;
-
-    if (n % 2 != 1) {
-        return three_n(n / 2, steps);
+    if (!(n & 1)) {
+        (*steps)++;
+        return three_n(n >> 1, steps);
     } else {
         if (n > (INT_MAX - 1) / 3) return 0;
-        return three_n((3 * n) + 1, steps);
+        (*steps) += 2;
+        return three_n(((3 * n) + 1) >> 1, steps);
     }
 }
 
