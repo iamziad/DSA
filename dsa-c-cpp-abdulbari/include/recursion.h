@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <limits.h>
 
 /* Tail Recursion */
 static void count_down(int n) {
@@ -154,6 +155,21 @@ static void tower_of_hanoi(int n, char src, char helper, char dest) {
         tower_of_hanoi(n - 1, src, dest, helper);
         printf("moved top disk from %c -> %c\n", src, dest);
         tower_of_hanoi(n - 1, helper, src, dest);
+    }
+}
+
+static int three_n(int n, int *steps) {
+    if (n == 1) {
+        return n;
+    }
+
+    (*steps)++;
+
+    if (n % 2 != 1) {
+        return three_n(n / 2, steps);
+    } else {
+        if (n > (INT_MAX - 1) / 3) return 0;
+        return three_n((3 * n) + 1, steps);
     }
 }
 
