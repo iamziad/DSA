@@ -168,19 +168,31 @@ static void tower_of_hanoi(int n, char src, char helper, char dest) {
    Some people say that the closest estimate is O(logn),
    but this is not proven mathmatically
  */
-static int three_n(int n, int *steps) {
-    if (n <= 1) {
-        return n;
+
+
+static long long three_n(long long n) {
+    enum { CACHE_SIZE = 1000 * 1000 };
+    static int cache[CACHE_SIZE];
+
+    if (n <= 1) return 0;
+
+    if (n < CACHE_SIZE && cache[n] != 0)
+        return cache[n];
+
+    int steps;
+    if (!(n & 1)) {
+        steps = 1 + three_n(n >> 1);
+    } else {
+        if (n > (LLONG_MAX - 1) / 3) {
+            fprintf(stderr, "three_n(): overflow occurs\n");
+            exit(-1);
+        }
+        steps = 2 + three_n(((3 * n) + 1) >> 1);
     }
 
-    if (!(n & 1)) {
-        (*steps)++;
-        return three_n(n >> 1, steps);
-    } else {
-        if (n > (INT_MAX - 1) / 3) return 0;
-        (*steps) += 2;
-        return three_n(((3 * n) + 1) >> 1, steps);
-    }
+    if (n < CACHE_SIZE) cache[n] = steps;
+
+    return steps;
 }
 
 
